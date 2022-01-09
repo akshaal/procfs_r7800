@@ -32,7 +32,6 @@ type ClassThermalZoneStats struct {
 	Name    string  // The name of the zone from the directory structure.
 	Type    string  // The type of thermal zone.
 	Temp    int64   // Temperature in millidegree Celsius.
-	Policy  string  // One of the various thermal governors used for a particular zone.
 	Mode    *bool   // Optional: One of the predefined values in [enabled, disabled].
 	Passive *uint64 // Optional: millidegrees Celsius. (0 for disabled, > 1000 for enabled+value)
 }
@@ -65,10 +64,6 @@ func parseClassThermalZone(zone string) (ClassThermalZoneStats, error) {
 	if err != nil {
 		return ClassThermalZoneStats{}, err
 	}
-	zonePolicy, err := util.SysReadFile(filepath.Join(zone, "policy"))
-	if err != nil {
-		return ClassThermalZoneStats{}, err
-	}
 	zoneTemp, err := util.ReadIntFromFile(filepath.Join(zone, "temp"))
 	if err != nil {
 		return ClassThermalZoneStats{}, err
@@ -93,7 +88,6 @@ func parseClassThermalZone(zone string) (ClassThermalZoneStats, error) {
 
 	return ClassThermalZoneStats{
 		Type:    zoneType,
-		Policy:  zonePolicy,
 		Temp:    zoneTemp,
 		Mode:    zoneMode,
 		Passive: zonePassive,
