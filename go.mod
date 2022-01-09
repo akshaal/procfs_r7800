@@ -1,4 +1,4 @@
-module github.com/prometheus/procfs
+module github.com/akshaal/procfs_r7800
 
 go 1.13
 
